@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olamide Bakare — Data Engineer & Cybersecurity Advocate</title>
+<meta name="description" content="Olamide Bakare — Data Engineer specializing in cybersecurity and data protection for healthcare systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #16161f;
+    --bg-card-hover: #1c1c28;
+    --accent: #00e5a0;
+    --accent-dim: rgba(0, 229, 160, 0.12);
+    --accent-glow: rgba(0, 229, 160, 0.25);
+    --text-primary: #e8e8ef;
+    --text-secondary: #8888a0;
+    --text-muted: #55556a;
+    --border: #222233;
+    --border-hover: #333348;
+    --font-display: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg-primary); }
+
+  /* ====== NOISE OVERLAY ====== */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ====== GRID BACKGROUND ====== */
+  .grid-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ====== GLOW ORB ====== */
+  .glow-orb {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+    transition: transform 0.3s ease-out;
+  }
+
+  /* ====== NAV ====== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 15, 0.8);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-secondary);
+    transition: all 0.3s;
+  }
+
+  /* ====== SECTIONS ====== */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* ====== HERO ====== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 100px;
+  }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), #00b8d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-description {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 580px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg-primary);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 30px var(--accent-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ====== TERMINAL DECORATION ====== */
+  .terminal-line {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .terminal-line .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 4px;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ====== SECTION HEADERS ====== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    padding-top: 120px;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .section-title {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ====== ABOUT ====== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.8;
+  }
+
+  .about-text p strong { color: var(--text-primary); font-weight: 500; }
+
+  .about-details {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+  }
+
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .detail-item:last-child { border-bottom: none; }
+
+  .detail-label {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+  }
+
+  .detail-value { color: var(--text-primary); font-weight: 400; }
+  .detail-value.accent { color: var(--accent); }
+
+  /* ====== SKILLS ====== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    transform: translateY(-4px);
+  }
+
+  .skill-card:hover::before { opacity: 1; }
+
+  .skill-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .skill-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ====== EDUCATION ====== */
+  .edu-timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--border));
+  }
+
+  .edu-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  .edu-item:hover {
+    border-color: var(--border-hover);
+    transform: translateX(8px);
+  }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -40px;
+    top: 32px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg-primary);
+  }
+
+  .edu-year {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .edu-degree {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .edu-school {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .edu-details {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* ====== WRITING ====== */
+  .writing-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .article-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .article-card:hover {
+    border-color: var(--accent);
+    background: var(--bg-card-hover);
+    transform: translateX(8px);
+  }
+
+  .article-number {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 28px;
+  }
+
+  .article-info h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .article-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .article-arrow {
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: all 0.3s;
+  }
+
+  .article-card:hover .article-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .writing-cta {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  /* ====== CERTIFICATIONS ====== */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .cert-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  .cert-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+
+  .cert-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-dim);
+    border-radius: 6px;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .cert-info h4 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .cert-info p {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .cert-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .cert-status.completed {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .cert-status.in-progress {
+    background: rgba(255, 193, 7, 0.12);
+    color: #ffc107;
+  }
+
+  /* ====== CONTACT ====== */
+  .contact-section {
+    padding-bottom: 120px;
+  }
+
+  .contact-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-content p {
+    color: var(--text-secondary);
+    font-size: 17px;
+    margin-bottom: 36px;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: all 0.3s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* ====== FOOTER ====== */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ====== ANIMATIONS ====== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: rgba(10, 10, 15, 0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .nav-links.open { display: flex; }
+
+    .hamburger { display: flex; }
+
+    section { padding: 0 20px; }
+
+    .about-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+
+    .article-card { grid-template-columns: 1fr; gap: 8px; }
+    .article-number { display: none; }
+    .article-arrow { display: none; }
+
+    .hero h1 { font-size: 36px; }
+    .section-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb" id="glow"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">OB.</div>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#writing">Writing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Data Engineer &bull; Cybersecurity Advocate</div>
+  <h1>
+    I build systems that<br>
+    <span class="highlight">protect data.</span>
+  </h1>
+  <p class="hero-description">
+    Data engineer specialising in secure, scalable data architectures for healthcare and public sector environments. Focused on bridging the gap between data engineering and cybersecurity.
+  </p>
+  <div class="hero-cta">
+    <a href="#writing" class="btn btn-primary">Read my writing</a>
+    <a href="https://github.com/olamidebakare" target="_blank" class="btn btn-outline">View GitHub</a>
+  </div>
+  <div class="terminal-line">
+    <span style="color: var(--accent);">$</span> securing_data_pipelines <span class="cursor"></span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-in">
+    <span class="section-number">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>
+        I'm a data engineer with a background in <strong>healthcare data systems</strong> and <strong>cloud architecture</strong>. I've spent years working with sensitive data in hospital environments — building ETL pipelines, optimising database infrastructure, and learning that every data engineering decision is also a security decision.
+      </p>
+      <p>
+        My focus is on the intersection of <strong>data engineering and cybersecurity</strong>. I believe the next generation of cyber resilience will be built not just by security teams, but by data engineers who design security into every pipeline, every warehouse, and every data architecture decision from the ground up.
+      </p>
+      <p>
+        I hold three degrees including two master's — an <strong>MSc in Big Data Technologies</strong> from Glasgow Caledonian University and an <strong>MIS from the University of Ibadan</strong>. I write about data, cybersecurity, and occasionally about what happens when a data engineer tries to make sense of everyday life.
+      </p>
+    </div>
+    <div class="about-details">
+      <div class="detail-item">
+        <span class="detail-label">Location</span>
+        <span class="detail-value">United Kingdom</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Focus</span>
+        <span class="detail-value accent">Cybersecurity &amp; Data Protection</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Industry</span>
+        <span class="detail-value">Healthcare &amp; Public Sector</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Experience</span>
+        <span class="detail-value">5+ years</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Degrees</span>
+        <span class="detail-value">3 (incl. 2 Master's)</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Status</span>
+        <span class="detail-value accent">Open to opportunities</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-in">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Skills &amp; Expertise</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid fade-in">
+    <div class="skill-card">
+      <span class="skill-icon">⛁</span>
+      <h3>Data Engineering</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">ETL Pipelines</span>
+        <span class="skill-tag">Data Modelling</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Databricks</span>
+        <span class="skill-tag">Kafka</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">☁</span>
+      <h3>Cloud &amp; Infrastructure</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS</span>
+        <span class="skill-tag">Azure</span>
+        <span class="skill-tag">GCP</span>
+        <span class="skill-tag">Snowflake</span>
+        <span class="skill-tag">Data Lake</span>
+        <span class="skill-tag">Azure Data Factory</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🛡</span>
+      <h3>Data Protection</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Encryption</span>
+        <span class="skill-tag">Access Control</span>
+        <span class="skill-tag">GDPR</span>
+        <span class="skill-tag">Data Masking</span>
+        <span class="skill-tag">Audit Logging</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">📊</span>
+      <h3>Analytics &amp; BI</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">DAX</span>
+        <span class="skill-tag">Looker</span>
+        <span class="skill-tag">Google Analytics</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">⚙</span>
+      <h3>Databases</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">SQL Server</span>
+        <span class="skill-tag">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">⟐</span>
+      <h3>Machine Learning</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">NLP</span>
+        <span class="skill-tag">Sentiment Analysis</span>
+        <span class="skill-tag">Jupyter</span>
+        <span class="skill-tag">R</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header fade-in">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-timeline fade-in">
+    <div class="edu-item">
+      <div class="edu-year">2023</div>
+      <div class="edu-degree">MSc Big Data Technologies</div>
+      <div class="edu-school">Glasgow Caledonian University — Glasgow, UK</div>
+      <div class="edu-details">AI &amp; Machine Learning · Big Data Platforms · Cloud Computing</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2021</div>
+      <div class="edu-degree">Master of Information Science</div>
+      <div class="edu-school">University of Ibadan — Ibadan, Nigeria</div>
+      <div class="edu-details">Information Systems · Research Methods · Data Management</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2014</div>
+      <div class="edu-degree">BSc Computer Science (Information Systems)</div>
+      <div class="edu-school">Babcock University — Ilishan Remo, Nigeria</div>
+      <div class="edu-details">Programming · Web Development · Database Languages</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITING -->
+<section id="writing">
+  <div class="section-header fade-in">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Writing</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="writing-grid fade-in">
+    <a href="#" class="article-card" target="_blank">
+      <span class="article-number">01</span>
+      <div class="article-info">
+        <h3>Why Data Engineers Are the First Line of Defense in Cybersecurity</h3>
+        <div class="article-meta">Cybersecurity &bull; Medium</div>
+      </div>
+      <span class="article-arrow">→</span>
+    </a>
+    <a href="#" class="article-card" target="_blank">
+      <span class="article-number">02</span>
+      <div class="article-info">
+        <h3>The Supermarket Is a Database and You're Running Terrible Queries</h3>
+        <div class="article-meta">Life in Rows &amp; Columns &bull; Medium</div>
+      </div>
+      <span class="article-arrow">→</span>
+    </a>
+
+    <!-- ADD MORE ARTICLES HERE AS YOU PUBLISH THEM -->
+    <!-- Copy the structure above, change the number, title, meta, and href -->
+
+  </div>
+  <div class="writing-cta fade-in">
+    <a href="#" class="btn btn-outline" target="_blank">View all articles on Medium</a>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header fade-in">
+    <span class="section-number">05</span>
+    <h2 class="section-title">Certifications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="cert-grid fade-in">
+    <div class="cert-card">
+      <div class="cert-icon">🛡</div>
+      <div class="cert-info">
+        <h4>CompTIA Security+</h4>
+        <p>Cybersecurity Fundamentals</p>
+      </div>
+      <span class="cert-status in-progress">In Progress</span>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">☁</div>
+      <div class="cert-info">
+        <h4>AWS / Azure Security</h4>
+        <p>Cloud Security Specialisation</p>
+      </div>
+      <span class="cert-status in-progress">Planned</span>
+    </div>
+
+    <!-- UPDATE THESE AS YOU EARN CERTIFICATIONS -->
+    <!-- Change "in-progress" to "completed" class and update the text -->
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-header fade-in">
+    <span class="section-number">06</span>
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-content fade-in">
+    <p>
+      I'm always open to conversations about data engineering, cybersecurity, healthcare data systems, or potential collaborations. Feel free to reach out.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:oluwatomisinbakare0@gmail.com" class="contact-link">
+        ✉ Email
+      </a>
+      <a href="https://www.linkedin.com/in/olamide-bakare/" target="_blank" class="contact-link">
+        in LinkedIn
+      </a>
+      <a href="https://github.com/olamidebakare" target="_blank" class="contact-link">
+        ⌥ GitHub
+      </a>
+      <a href="#" target="_blank" class="contact-link">
+        ✎ Medium
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built by Olamide Bakare · 2026</p>
+</footer>
+
+<script>
+  // Glow orb follows mouse
+  document.addEventListener('mousemove', (e) => {
+    const glow = document.getElementById('glow');
+    glow.style.left = (e.clientX - 300) + 'px';
+    glow.style.top = (e.clientY - 300 + window.scrollY) + 'px';
+  });
+
+  // Scroll-triggered fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
